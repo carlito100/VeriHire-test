@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerHub - Job Details</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f3f6f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #0a66c2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 15px;
+    }
+
+    .job-header h1 {
+      font-size: 1.8em;
+      margin: 0;
+      color: #0a66c2;
+    }
+
+    .company-name {
+      font-size: 1.1em;
+      font-weight: 600;
+      margin: 6px 0 0;
+    }
+
+    .location {
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    .logo {
+      width: 100px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    .section h3 {
+      color: #0a66c2;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+
+    .section p {
+      margin: 0;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    .apply-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 22px;
+      background-color: #0a66c2;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .apply-btn:hover {
+      background-color: #004182;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #0a66c2;
+      font-weight: 500;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>CareerHub - Job Details</header>
+
+  <div class="container" id="jobDetailContainer">
+    <p>Loading job details...</p>
+  </div>
+
+  <script>
+    const job = JSON.parse(localStorage.getItem("selectedJob"));
+    const container = document.getElementById("jobDetailContainer");
+
+    if (job) {
+      container.innerHTML = `
+        <div class="job-header">
+          <div>
+            <h1>${job["Job Title"]}</h1>
+            <p class="company-name">${job["Company Profile"]}</p>
+            <p class="location">${job["Location"]}</p>
+          </div>
+          <img src="${job.logo}" alt="Company Logo" class="logo">
+        </div>
+
+        <div class="section">
+          <h3>Job Description</h3>
+          <p>${job["Description"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Department</h3>
+          <p>${job["Department"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Employment Type</h3>
+          <p>${job["Employment Type"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Industry</h3>
+          <p>${job["Industry"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Required Experience</h3>
+          <p>${job["Required Experience"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Job Function</h3>
+          <p>${job["Job Function"] || "Not specified"}</p>
+        </div>
+
+        <div class="section">
+          <h3>Salary</h3>
+          <p>${job["Salary"] || "Not specified"}</p>
+        </div>
+
+        <div class="section">
+          <h3>Required Education</h3>
+          <p>${job["Required Education"]}</p>
+        </div>
+
+        <div class="section">
+          <h3>Benefits</h3>
+          <ul>${job["Benefits"].map(b => `<li>${b}</li>`).join("")}</ul>
+        </div>
+
+        <div class="section">
+          <h3>Requirements</h3>
+          <p>${job["Requirements"]}</p>
+        </div>
+
+        <a href="index.html" class="back-btn">← Back to Job Listings</a>
+        <a href="#" class="apply-btn">Apply Now</a>
+      `;
+    } else {
+      container.innerHTML = "<p>⚠️ Job details not found. Please go back to the listings.</p>";
+    }
+  </script>
+</body>
+</html>

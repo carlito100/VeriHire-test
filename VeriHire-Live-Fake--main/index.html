@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerHub - Job Listings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0077b5;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    
+    .layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .post-job-form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  }
+
+  .post-job-form h3 {
+    margin-top: 0;
+    color: #0077b5;
+  }
+
+  .post-job-form label {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+
+  .post-job-form input,
+  .post-job-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9em;
+  }
+
+  .post-job-form button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: #0077b5;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    select, button {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+    button {
+      background-color: #0077b5;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #005f8d;
+    }
+
+    .job-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      transition: 0.3s;
+    }
+
+    .job-card:hover {
+      background-color: #f8fbff;
+      transform: translateY(-2px);
+    }
+
+    .job-title {
+      color: #0077b5;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 3px;
+      cursor: pointer;
+    }
+
+    .company {
+      color: #444;
+      margin-bottom: 5px;
+    }
+
+    .job-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .apply-btn {
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .apply-btn:hover {
+      background-color: #16a085;
+    }
+
+    #pagination {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    #pagination button {
+      margin: 0 3px;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      background: white;
+    }
+
+    #pagination button.active {
+      background-color: #0077b5;
+      color: white;
+    }
+
+    #pagination button:hover {
+      background-color: #005f8d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>CareerHub Job Listings</header>
+
+  <div class="container">
+    <div class="layout">
+
+    <!-- LEFT SIDE FORM -->
+    <div class="post-job-form">
+      <h3>Post Your Own Job</h3>
+
+      <label>Job Title</label>
+      <input type="text" id="customTitle">
+
+      <label>Company</label>
+      <input type="text" id="customCompany">
+
+      <label>Location</label>
+      <input type="text" id="customLocation">
+
+      <label>Department</label>
+      <input type="text" id="customDepartment">
+
+      <label>Employment Type</label>
+      <input type="text" id="customType">
+
+      <label>Industry</label>
+      <input type="text" id="customIndustry">
+
+      <label>Required Experience</label>
+      <input type="text" id="customExperience">
+
+      <label>Job Function</label>
+      <input type="text" id="customFunction">
+
+      <label>Salary</label>
+      <input type="text" id="customSalary">
+
+      <label>Required Education</label>
+      <input type="text" id="customEducation">
+
+      <label>Description</label>
+      <textarea id="customDescription" rows="4"></textarea>
+
+      <label>Benefits<br><span style="font-size: 12px; color: gray;">(separate with commas)</span></label>
+      <input type="text" id="customBenefits" placeholder="e.g. Health insurance, Paid leave">
+
+      <label>Requirements</label>
+      <textarea id="customRequirements" rows="3"></textarea>
+
+      <button onclick="postCustomJob()">Post Job</button>
+    </div>
+
+
+    <div>
+        <div class="filter-bar">
+        <select id="locationFilter">
+          <option value="">All Locations</option>
+          <option value="Makati City">Makati City</option>
+          <option value="Quezon City">Quezon City</option>
+          <option value="Cebu City">Cebu City</option>
+          <option value="Remote">Remote</option>
+        </select>
+         <!-- <button id="randomizeBtn">🔀 Generate Jobs</button> -->
+        </div>
+
+      <div id="jobContainer"></div>
+      <div id="pagination"></div>
+    </div>
+    
+
+  <script>
+    let jobs = [];
+    let currentPage = 1;
+    const jobsPerPage = 10;
+
+    const container = document.getElementById("jobContainer");
+    const locationFilter = document.getElementById("locationFilter");
+    //const randomizeBtn = document.getElementById("randomizeBtn");
+    const pagination = document.getElementById("pagination");
+
+    async function loadJobs() {
+      try {
+        const res = await fetch("jobs.json"); // make sure path is correct on your server
+        if (!res.ok) {
+          console.error("Failed to load jobs.json:", res.status, res.statusText);
+          return;
+        }
+        jobs = await res.json();
+        shuffleJobs();
+      } catch (error) {
+        console.error("Error loading jobs:", error);
+      }
+    }
+
+    function displayJobs(list) {
+      container.innerHTML = "";
+      const start = (currentPage - 1) * jobsPerPage;
+      const end = start + jobsPerPage;
+      const paginatedJobs = list.slice(start, end);
+
+      paginatedJobs.forEach(job => {
+        const jobCard = document.createElement("div");
+        jobCard.classList.add("job-card");
+        jobCard.innerHTML = `
+          <div>
+            <div class="job-title" onclick="viewDetails(${job.id})">${job["Job Title"]}</div>
+            <div class="company">${job["Company Profile"]}</div>
+            <div class="job-meta">${job["Location"]} • ${job["Employment Type"]} • ${job["Salary"]}</div>
+            <button class="apply-btn" onclick="viewDetails(${job.id})">View Details</button>
+          </div>
+        `;
+        container.appendChild(jobCard);
+      });
+
+      renderPagination(list.length);
+    }
+
+    function renderPagination(totalJobs) {
+      const totalPages = Math.max(1, Math.ceil(totalJobs / jobsPerPage));
+      pagination.innerHTML = "";
+
+      // Previous button
+      const prevBtn = document.createElement("button");
+      prevBtn.textContent = "Previous";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          applyFilter();
+        }
+      });
+      pagination.appendChild(prevBtn);
+
+      // Number buttons
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add("active");
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          applyFilter();
+        });
+        pagination.appendChild(btn);
+      }
+
+      // Next button
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next";
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          applyFilter();
+        }
+      });
+      pagination.appendChild(nextBtn);
+    }
+
+    function shuffleJobs() {
+      jobs.sort(() => Math.random() - 0.5);
+      currentPage = 1;
+      applyFilter();
+    }
+
+    function applyFilter() {
+      const allJobs = mergeJobs();
+      const filterValue = locationFilter.value.toLowerCase();
+
+      const filteredJobs = allJobs.filter(job =>
+        filterValue === "" || (job["Location"] || "").toLowerCase().includes(filterValue)
+      );
+
+      // If current page is out of range after filtering, reset to 1
+      const totalPages = Math.max(1, Math.ceil(filteredJobs.length / jobsPerPage));
+      if (currentPage > totalPages) currentPage = 1;
+
+      displayJobs(filteredJobs);
+    }
+
+
+
+    function viewDetails(id) {
+      // find in merged list so custom jobs are included
+      const selected = mergeJobs().find(job => job.id === id);
+      if (!selected) return alert('Job not found.');
+      localStorage.setItem("selectedJob", JSON.stringify(selected));
+      // redirect to a details page (make sure job-details.html exists)
+      window.location.href = "job_detail4.html";
+    }
+
+    locationFilter.addEventListener("change", () => {
+      currentPage = 1;
+      applyFilter();
+    });
+    //randomizeBtn.addEventListener("click", shuffleJobs);
+
+    loadJobs();
+
+    // LOCAL STORAGE CUSTOM JOBS
+    let customJobs = JSON.parse(localStorage.getItem("customJobs") || "[]");
+
+    // Merge custom + generated jobs
+    function mergeJobs() {
+      return [...customJobs, ...jobs];
+    }
+
+
+    // Save new custom job
+    function postCustomJob() {
+      const job = {
+        id: Date.now(),
+        "Job Title": document.getElementById("customTitle").value.trim(),
+        "Company Profile": document.getElementById("customCompany").value.trim(),
+        "Location": document.getElementById("customLocation").value.trim(),
+        "Department": document.getElementById("customDepartment").value.trim(),
+        "Employment Type": document.getElementById("customType").value.trim(),
+        "Industry": document.getElementById("customIndustry").value.trim(),
+        "Required Experience": document.getElementById("customExperience").value.trim(),
+        "Job Function": document.getElementById("customFunction").value.trim(),
+        "Salary": document.getElementById("customSalary").value.trim(),
+        "Required Education": document.getElementById("customEducation").value.trim(),
+        "Description": document.getElementById("customDescription").value.trim(),
+        "Benefits": document.getElementById("customBenefits").value.split(",").map(b => b.trim()).filter(b => b),
+        "Requirements": document.getElementById("customRequirements").value.trim(),
+        logo: "https://via.placeholder.com/80"
+      };
+
+      // Validation
+      if (!job["Job Title"] || !job["Company Profile"]) {
+        alert("Job Title and Company are required.");
+        return;
+      }
+
+      customJobs.push(job);
+      localStorage.setItem("customJobs", JSON.stringify(customJobs));
+
+      // clear form
+      document.getElementById("customTitle").value = "";
+      document.getElementById("customCompany").value = "";
+      document.getElementById("customLocation").value = "";
+      document.getElementById("customDepartment").value = "";
+      document.getElementById("customType").value = "";
+      document.getElementById("customIndustry").value = "";
+      document.getElementById("customExperience").value = "";
+      document.getElementById("customFunction").value = "";
+      document.getElementById("customSalary").value = "";
+      document.getElementById("customEducation").value = "";
+      document.getElementById("customDescription").value = "";
+      document.getElementById("customBenefits").value = "";
+      document.getElementById("customRequirements").value = "";
+
+      alert("Job posted successfully!");
+
+      applyFilter(); // refresh
+    }
+
+       
+
+  </script>
+</body>
+</html>
+
+
+
